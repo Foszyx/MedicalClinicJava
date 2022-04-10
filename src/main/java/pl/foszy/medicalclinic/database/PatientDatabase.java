@@ -17,6 +17,8 @@ public class PatientDatabase {
     private String sex;
     private Long pesel;
 
+    public PatientDatabase(){}
+
     public PatientDatabase(String name, String surname, String sex, Long pesel) {
         this.name = name;
         this.surname = surname;
