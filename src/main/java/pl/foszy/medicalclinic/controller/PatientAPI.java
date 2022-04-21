@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.foszy.medicalclinic.database.PatientRepository;
 import pl.foszy.medicalclinic.database.Patient;
+import pl.foszy.medicalclinic.model.PatientModel;
 
 @RestController
 @CrossOrigin
@@ -21,10 +22,17 @@ public class PatientAPI {
 
     //work
     @ResponseBody
-    @RequestMapping(path = "/API/testCreatePatients", method = RequestMethod.POST)
+    @RequestMapping(path = "/API/CreatePatient", method = RequestMethod.POST)
     public void createPatient(@RequestParam("name") String name,@RequestParam("surname") String surname, @RequestParam("sex") String sex, @RequestParam("pesel") Long pesel){
         Patient patient = new Patient(name, surname, sex, pesel);
         patientRepository.save(patient);
+    }
+
+    //work
+    @ResponseBody
+    @RequestMapping(path = "/API/ChangeSurname", method = RequestMethod.POST)
+    public void changePatientSurname(@RequestParam("newSurname") String newSurname, @RequestParam("pesel") Long pesel){
+        PatientModel.changeSurname(patientRepository, pesel, newSurname);
     }
 
     //work
