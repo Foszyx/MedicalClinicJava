@@ -1,5 +1,4 @@
 # MedicalClinicJava
-Settings 
-
-Project: SDK - 17, SDK deafault
-SDKs: JDK 1.8
+REST API 
+Point to create/change surname/get patient.
+Example API continuously developed for springboot learning by myself.
