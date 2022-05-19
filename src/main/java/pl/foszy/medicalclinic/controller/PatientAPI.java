@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.foszy.medicalclinic.database.PatientRepository;
 import pl.foszy.medicalclinic.database.Patient;
 import pl.foszy.medicalclinic.model.PatientModel;
+import pl.foszy.medicalclinic.security.CheckCreatePatient;
 
 @RestController
 @CrossOrigin
@@ -15,13 +16,23 @@ public class PatientAPI {
 
     @PostMapping("/API/createPatient")
     public void createPatient(@RequestParam("name") String name,@RequestParam("surname") String surname, @RequestParam("sex") String sex, @RequestParam("pesel") Long pesel){
-        Patient patient = new Patient(name, surname, sex, pesel);
-        patientRepository.save(patient);
+        if(CheckCreatePatient.stringDataIsCorrect(name) &&
+           CheckCreatePatient.stringDataIsCorrect(surname) &&
+           CheckCreatePatient.stringDataIsCorrect(sex) &&
+           CheckCreatePatient.peselIsCorrect(pesel)){
+                Patient patient = new Patient(CheckCreatePatient.upperFirstLetter(name),
+                                              CheckCreatePatient.upperFirstLetter(surname),
+                                              CheckCreatePatient.upperFirstLetter(sex),
+                                              pesel);
+                patientRepository.save(patient);
+        }
     }
 
     @PutMapping("/API/changeSurname")
     public void changePatientSurname(@RequestParam("newSurname") String newSurname, @RequestParam("pesel") Long pesel){
-        PatientModel.changeSurname(patientRepository, pesel, newSurname);
+        if(CheckCreatePatient.peselIsCorrect(pesel) && CheckCreatePatient.stringDataIsCorrect(newSurname)) {
+            PatientModel.changeSurname(patientRepository, pesel, newSurname);
+        }
     }
 
     @GetMapping("/API/getPatients")
